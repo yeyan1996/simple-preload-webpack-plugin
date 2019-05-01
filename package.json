@@ -1,0 +1,23 @@
+{
+  "name": "simple-preload-webpack-plugin",
+  "version": "1.1.0",
+  "description": "a simple plugin for webpack",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yeyan1996/simple-preload-webpack-plugin.git"
+  },
+  "keywords": [
+    "webpack",
+    "preload"
+  ],
+  "author": "yeyan1996 1996yeyan@gmail.com",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yeyan1996/simple-preload-webpack-plugin/issues"
+  },
+  "homepage": "https://github.com/yeyan1996/simple-preload-webpack-plugin#readme"
+}
