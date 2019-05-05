@@ -1,12 +1,12 @@
-const defaultOptions = {
-    prefix: /preload/g,
+const DEFAULT_OPTIONS = {
+    prefix: /preload-/g,
     type: "image"
 }
 
 class SimplePreloadWebpackPlugin {
     constructor(options) {
         this.options = {
-            ...defaultOptions,
+            ...DEFAULT_OPTIONS,
             ...options,
         }
     }
@@ -16,30 +16,42 @@ class SimplePreloadWebpackPlugin {
 
             let key = Object.keys(compilation.assets).filter(key => /\.html/.test(key))[0]
             let html = compilation.assets[key].source()
+            let index = this.findTargetIndex(html)
 
-            let regExp = /<link[^>]*>/g
-            let index = 0
-            do {
-                index = regExp.lastIndex
-                regExp.exec(html)
-            } while (regExp.lastIndex)
             let leftHtml = html.slice(0, index)
             let rightHtml = html.slice(index)
 
             let preloadAssets = Object
                 .keys(compilation.assets)
                 .filter(assetPath => this.options.prefix.test(assetPath))
-                .map(assetPath => `<link rel=preload href=${assetPath} as=${this.options.type}>`)
-
+                .map(assetPath => `<link href=${assetPath} rel=preload as=${this.options.type}>`)
 
             compilation.assets[key] = {
                 ...compilation.assets[key],
                 source() {
                     return leftHtml + preloadAssets.toString() + rightHtml
+                },
+                size() {
+                    return (leftHtml + preloadAssets.toString() + rightHtml).length
                 }
             }
             callback()
         })
+    }
+    findTargetIndex(html) {
+        let regExp = /<link[^>]*>/g
+        let index = 0
+        do {
+            index = regExp.lastIndex
+            regExp.exec(html)
+        } while (regExp.lastIndex)
+
+
+        if(!index){
+            index = html.indexOf('</head>')
+            if(index < 0 ) throw new Error("can not find node 'head'")
+        }
+        return index
     }
 }
 
