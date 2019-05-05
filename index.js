@@ -1,6 +1,7 @@
 const DEFAULT_OPTIONS = {
     prefix: /preload-/g,
-    type: "image"
+    as: "image",
+    rel:"preload"
 }
 
 class SimplePreloadWebpackPlugin {
@@ -24,7 +25,7 @@ class SimplePreloadWebpackPlugin {
             let preloadAssets = Object
                 .keys(compilation.assets)
                 .filter(assetPath => this.options.prefix.test(assetPath))
-                .map(assetPath => `<link href=${assetPath} rel=preload as=${this.options.type}>`)
+                .map(assetPath => `<link href=${assetPath} rel=${this.options.rel} as=${this.options.type}>`)
 
             compilation.assets[key] = {
                 ...compilation.assets[key],
