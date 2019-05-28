@@ -25,7 +25,7 @@ class SimplePreloadWebpackPlugin {
             let preloadAssets = Object
                 .keys(compilation.assets)
                 .filter(assetPath => this.options.prefix.test(assetPath))
-                .map(assetPath => `<link href=${assetPath} rel=${this.options.rel} as=${this.options.type}>`)
+                .map(assetPath => `<link href=${assetPath} rel=${this.options.rel} as=${this.options.as}>`)
 
             compilation.assets[key] = {
                 ...compilation.assets[key],
